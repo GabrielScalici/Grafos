@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "grafo_matriz.c"
 
 int main(void){
@@ -29,7 +30,26 @@ int main(void){
         contador_arestas++;
       }
 
-      //OPERACOES D M
+    //OPERACOES D M
+    while(scanf("%s ", op) != EOF){
+  		if(strcmp(op, "IG") == 0){
+  			imprimir_matriz(g);
+  		}else if(strcmp(op, "VA") == 0){
+
+
+  		}else if(strcmp(op, "AA") == 0){
+        scanf("%d %d %d", &v1, &v2, &peso);
+        g = inserir_valores_digrafo(g, v1-1, v2-1, peso);
+
+  		}else if(strcmp(op, "RA") == 0){
+
+
+  		}else if(strcmp(op, "IT") == 0){
+
+  		}else if(strcmp(op, "MP") == 0){
+
+  		}
+  	}
 
 
 		}if(tipo_armazenamento == 'L'){
@@ -47,12 +67,28 @@ int main(void){
         //Pegando os valores
         scanf("%d %d %d", &v1, &v2, &peso);
         //Inserindo
-        g = inserir_valores_grafo(g, v1-1, v2-1, peso);
+        g = inserir_valores_grafo(g, v1, v2, peso);
         contador_arestas++;
       }
 
       //OPERACOES G M
+      while(scanf("%s ", op) != EOF){
+        if(strcmp(op, "IG") == 0){
+          imprimir_matriz(g);
+        }else if(strcmp(op, "VA") == 0){
 
+        }else if(strcmp(op, "AA") == 0){
+          scanf("%d %d %d", &v1, &v2, &peso);
+          g = inserir_valores_grafo(g, v1, v2, peso);
+
+        }else if(strcmp(op, "RA") == 0){
+
+        }else if(strcmp(op, "IT") == 0){
+
+        }else if(strcmp(op, "MP") == 0){
+
+        }
+      }
 
 		}if(tipo_armazenamento == 'L'){
       //Grafo - Lista
@@ -63,7 +99,6 @@ int main(void){
 	}
 
 
-  imprimir_matriz(g);
 
 
   return 0;
