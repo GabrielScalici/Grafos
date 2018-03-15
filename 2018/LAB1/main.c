@@ -1,105 +1,92 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-#include "grafo_matriz.c"
+#include "matrix.h"
+#include "list.h"
 
-int main(void){
-  char tipo_grafo, tipo_armazenamento;
-  int vertices, arestas;
-  int contador_arestas = 0;
-  int v1, v2, peso;
-  char op[2];
-  GRAFO_M *g;
+//Usar a forma de armazenando matriz
+void graph_matrix(int num_vertices, int num_arestas, char type, char* operacao){
+	GRAPH_M *g = create_Graph_M(num_vertices);
+	g = fill_Graph_M(g, num_arestas, type);
+	getchar();
+	while(scanf("%s", operacao) != EOF){
+		//Imprimir grafo
+		if(strcmp(operacao, "IG") == 0){
+			print_Graph_M(g);
+		}
+		//Imprimir Adj
+		if(strcmp(operacao, "VA") == 0){
+			print_AdjVertex_M(g);
+		}
+		//Imprimir Aresta
+		if(strcmp(operacao, "AA") == 0){
+			g = add_Edge_M(g, type);
+		}
+		//Remover Aresta
+		if(strcmp(operacao, "RA") == 0){
+			g = remove_Edge_M(g, type);
+		}
+		//Imprimir Transposto
+		if(strcmp(operacao, "IT") == 0){
+			print_TransGraph_M(g, type);
+		}
+		//Imprimir mais leve
+		if(strcmp(operacao, "MP") == 0){
+			print_LighterEdge_M(g);
+		}
+	}
+	free_Graph_M(g);
+}
 
-  //Armazenando se é Digrafo ou Grafo e numero de vertices e arestas
-  scanf("%c %c", &tipo_grafo, &tipo_armazenamento);
-  scanf("%d %d", &vertices, &arestas);
+//Usar a forma de armazenamento lista de adj
+//OBS: Exatamente igual o funcionamento da funcao para matrix,
+//     com a diferença do _l no lugar _m nas funcoes
+void graph_list(int num_vertices, int num_arestas, char type, char* operacao){
+	GRAPH_L *g = create_Graph_L(num_vertices);
+	g = fill_Graph_L(g, num_arestas, type);
+	getchar();
+	while(scanf("%s", operacao) != EOF){
+		if(strcmp(operacao, "IG") == 0){
+			print_Graph_L(g);
+		}
+		if(strcmp(operacao, "VA") == 0){
+			print_AdjVertex_L(g);
+		}
+		if(strcmp(operacao, "AA") == 0){
+			g = add_Edge_L(g, type);
+		}
+		if(strcmp(operacao, "RA") == 0){
+			g = remove_Edge_L(g, type);
+		}
+		if(strcmp(operacao, "IT") == 0){
+			print_TransGraph_L(g, type);
+		}
+		if(strcmp(operacao, "MP") == 0){
+			print_LighterEdge_L(g);
+		}
+	}
+	free_Graph_L(g);
+}
 
-  //Verificando qual o tipo de grafo
-  if(tipo_grafo == 'D'){
-		if(tipo_armazenamento == 'M'){
-			//Digrafo - Matriz
-      g = criar_grafo_matriz(vertices, arestas);
-      //Adicionando os valores no grafo
+int main (int argc, char *argv[]){
+	char operacao[2];
+	char type, TAD;
+	int num_vertices, num_arestas;
+	GRAPH_L *g;
 
-      while(contador_arestas < arestas){
-        //Pegando os valores
-        scanf("%d %d %d", &v1, &v2, &peso);
-        //Inserindo
-        g = inserir_valores_digrafo(g, v1-1, v2-1, peso);
-        contador_arestas++;
-      }
+	//Pegando os valores do tipo de grafo
+	scanf("%c %c", &type, &TAD);
+	getchar();
 
-    //OPERACOES D M
-    while(scanf("%s ", op) != EOF){
-  		if(strcmp(op, "IG") == 0){
-  			imprimir_matriz(g);
-  		}else if(strcmp(op, "VA") == 0){
+	scanf("%d %d", &num_vertices, &num_arestas);
 
-
-  		}else if(strcmp(op, "AA") == 0){
-        scanf("%d %d %d", &v1, &v2, &peso);
-        g = inserir_valores_digrafo(g, v1-1, v2-1, peso);
-
-  		}else if(strcmp(op, "RA") == 0){
-
-
-  		}else if(strcmp(op, "IT") == 0){
-
-  		}else if(strcmp(op, "MP") == 0){
-
-  		}
-  	}
-
-
-		}if(tipo_armazenamento == 'L'){
-      //Digrafo - Lista
-
-      //OPERACOES D L
-    }
-
-	}if(tipo_grafo == 'G'){
-		if(tipo_armazenamento == 'M'){
-			//Grafo - Matriz
-      g = criar_grafo_matriz(vertices, arestas);
-      //Adicionando os valores no grafo
-      while(contador_arestas < arestas){
-        //Pegando os valores
-        scanf("%d %d %d", &v1, &v2, &peso);
-        //Inserindo
-        g = inserir_valores_grafo(g, v1, v2, peso);
-        contador_arestas++;
-      }
-
-      //OPERACOES G M
-      while(scanf("%s ", op) != EOF){
-        if(strcmp(op, "IG") == 0){
-          imprimir_matriz(g);
-        }else if(strcmp(op, "VA") == 0){
-
-        }else if(strcmp(op, "AA") == 0){
-          scanf("%d %d %d", &v1, &v2, &peso);
-          g = inserir_valores_grafo(g, v1, v2, peso);
-
-        }else if(strcmp(op, "RA") == 0){
-
-        }else if(strcmp(op, "IT") == 0){
-
-        }else if(strcmp(op, "MP") == 0){
-
-        }
-      }
-
-		}if(tipo_armazenamento == 'L'){
-      //Grafo - Lista
-
-      //OPERACOES G L
-    }
-
+	//USANDO MATRIZ DE AJD
+	if(TAD == 'M'){
+		graph_matrix(num_vertices, num_arestas, type, operacao);
+		//USANDO LISTA DE ADJ
+	} else{
+		graph_list(num_vertices, num_arestas, type, operacao);
 	}
 
-
-
-
-  return 0;
+	return 0;
 }
