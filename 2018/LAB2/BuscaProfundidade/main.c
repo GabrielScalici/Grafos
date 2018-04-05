@@ -19,7 +19,7 @@ int main (int argc, char *argv[]){
 
 	// Busca de caminhos
 	while(scanf("%d", &a) != EOF && scanf("%d", &b) != EOF){
-		BFS(graph, a, b);
+		DFS(graph, a, b);
 	}
 
 	/* Liberação de Memória */
