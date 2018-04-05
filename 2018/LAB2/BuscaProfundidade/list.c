@@ -184,28 +184,40 @@ void BFS(GRAPH_L *graph, int a, int b){
 	print_Way(origin, graph->list[b].node);
 	printf("\n");
 }
-
-void DFS_visit(GRAPH_L *graph, NODE *aux, int *t){
+/*
+ Função recursiva do método DFS.
+ - Parametros : graph = Grafo em si
+ 				aux = nó a ser analisado
+ 				t = variavel indicativa da distancia
+ 				vector = vetor que contem os indíces dos nós processados
+ 				count = variável para auxiliar no preenchimento do vetor
+*/
+void DFS_visit(GRAPH_L *graph, NODE *aux, int *t, int *vector, int *count){
 	aux->color = -1; // Visitado
 	(*t)++;
-	aux->dist = *t;
+	aux->dist = *t; // Seta-se a distância
 	NODE *visit = aux->next;
 	while(visit != NULL){
-		if(graph->list[visit->id].node->color == 0){
+		if(graph->list[visit->id].node->color == 0){ // Não visitado
 			graph->list[visit->id].node->pre = aux;
-			DFS_visit(graph, graph->list[visit->id].node, t);
+			DFS_visit(graph, graph->list[visit->id].node, t, vector, count); // Chamada da função recursiva
 		}
 		visit = visit->next;
 	}
 	aux->color = 1; // Processado
-	aux->fim = *t = *t + 1;
+	vector[(*count)++] = aux->id; // Preenchimento do vetor
+	aux->fim = *t = *t + 1; // Seta-se a variável de fim do nó
 }
 
-void DFS(GRAPH_L *graph, int a, int b){
-	NODE *origin = graph->list[a].node;
-	NODE *aux = origin->next;
+/*
+ Função para execução da busca DFS
+ - Parametros : graph = Grafo em si
+ - Retorno : vetor com o indice dos nós processados
+*/
+int *DFS(GRAPH_L *graph){
+	int i, count = 0;
 
-	int i;
+	int *vector = (int *) malloc(sizeof(int) * graph->n_verdex);
 
 	for(i = 0; i < graph->n_verdex; i++){
 		graph->list[i].node->color = 0; // Não visitado
@@ -216,9 +228,14 @@ void DFS(GRAPH_L *graph, int a, int b){
 
 	for(i = 0; i < graph->n_verdex; i++){
 		if(graph->list[i].node->color == 0){ // Não visitado
-			DFS_visit(graph, graph->list[i].node, &t);
+			DFS_visit(graph, graph->list[i].node, &t, vector, &count);
 		}
 	}
+
+	print_Way(origin, graph->list[b].node);
+	printf("\n");
+	
+	return vector;
 }
 
 /*
